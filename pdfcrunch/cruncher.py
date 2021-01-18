@@ -49,7 +49,7 @@ class WorkingCruncher:
     @contextmanager
     def _reader(self):
         """Context manager for PdfFileReader wrapping this file"""
-        with open(self._path) as r:
+        with open(self._path, "rb") as r:
             reader = PdfFileReader(r)
             yield reader
 
@@ -58,7 +58,7 @@ class WorkingCruncher:
     ) -> WorkingCruncher:
         """Write to a new temporary file and return a Cruncher over it"""
         fpath = self._new_child()
-        with open(fpath, "w") as f:
+        with open(fpath, "wb") as f:
             writer.write(f)
         return WorkingCruncher(fpath, self._tmpdir)
 
