@@ -7,6 +7,7 @@ from typing import Optional, Union, Iterator
 from contextlib import contextmanager
 from uuid import uuid4
 from shutil import copyfile
+import os
 
 from PyPDF2 import PdfFileReader, PdfFileMerger, PdfFileWriter
 
@@ -93,7 +94,7 @@ class WorkingCruncher:
         """Join this Cruncher with all given Crunchers."""
         merger = PdfFileMerger()
         for c in [self, *args]:
-            merger.append(c._path)
+            merger.append(os.fspath(c._path))
         return self._finalize(merger)
 
     def rotate90cw(self, n: int = 1) -> WorkingCruncher:
