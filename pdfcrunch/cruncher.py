@@ -73,8 +73,12 @@ class WorkingCruncher:
         """Get specified pages from PDF"""
         writer = PdfFileWriter()
         with self._reader() as r:
-            for page in r.pages[idx]:
-                writer.addPage(page)
+            selection = r.pages[idx]
+            if isinstance(idx, slice):
+                for page in selection:
+                    writer.addPage(page)
+            else:
+                writer.addPage(selection)
             return self._finalize(writer)
 
     def split(self) -> Iterator[WorkingCruncher]:
